@@ -1,0 +1,60 @@
+name: Deploy Manually
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment-deployment:
+        description: 'Environment to deploy to'
+        required: false
+        default: false
+        type: boolean
+
+      environment-name:
+        description: Environment Name
+        required: false
+        default: Development
+        type: choice
+        options:
+          - Development
+          - Staging
+          - Production
+
+    # security-check:
+    #   description: 'Run security checks'
+    #   required: false
+    #   default: 'false'
+    #   type: boolean
+
+jobs:
+  deploy-dev:
+    name: deploy to Dev
+    if: ${{ github.actor != 'dependabot[bot]' && inputs.execute-deployment && inputs.environment-name == 'Development' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Dev
+        run: echo "Deploying feature branch to Dev environment....feature/branch.."
+
+  deploy-Staging:
+    name: deploy to Dev
+    if: ${{ github.actor != 'dependabot[bot]' && inputs.execute-deployment && inputs.environment-name == 'Staging' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Dev
+        run: echo "Deploying feature branch to Staging environment....feature/branch.."
+
+  deploy-Production:
+    name: deploy to Dev
+    if: ${{ github.actor != 'dependabot[bot]' && inputs.execute-deployment && inputs.environment-name == 'Production' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Dev
+        run: echo "Deploying feature branch to Production environment....feature/branch.."
