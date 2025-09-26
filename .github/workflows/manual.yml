@@ -36,6 +36,37 @@ jobs:
         run: |
           echo "Deploying branch: ${{ github.ref_name }} to Development environment..."
 
+  deploy-Staging:
+    name: Deploy to Development
+    if: >
+      github.actor != 'dependabot[bot]' &&
+      inputs.execute-deployment == true &&
+      inputs.environment-name == 'Staging'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to Staging
+        run: |
+          echo "Deploying branch: ${{ github.ref_name }} to Staging environment..."
+
+  deploy-Production:
+    name: Deploy to Development
+    if: >
+      github.actor != 'dependabot[bot]' &&
+      inputs.execute-deployment == true &&
+      inputs.environment-name == 'Production'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to Staging
+        run: |
+          echo "Deploying branch: ${{ github.ref_name }} to Production environment..."
 
 
 # name: Deploy Manually
