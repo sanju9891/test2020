@@ -1,18 +1,22 @@
-name: Docker Image CI
+name: Dev Deployment
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - 'feature/*'
   pull_request:
-    branches: [ master ]
+    branches:
+      - '**'   # allow PRs from any branch
 
 jobs:
-
-  build:
-
+  deploy-dev:
+    if: |
+      github.ref != 'refs/heads/main' &&
+      startsWith(github.ref, 'refs/heads/feature/')
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Dev
+        run: echo "Deploying feature branch to Dev environment..."
