@@ -1,17 +1,17 @@
-name: Deploy Manually
+name: Manual Deployment
 
 on:
   workflow_dispatch:
     inputs:
-      environment-deployment:
-        description: 'Environment to deploy to'
+      execute-deployment:
+        description: 'Execute deployment?'
         required: false
         default: false
         type: boolean
 
       environment-name:
-        description: Environment Name
-        required: false
+        description: 'Select target environment'
+        required: true
         default: Development
         type: choice
         options:
@@ -19,42 +19,82 @@ on:
           - Staging
           - Production
 
-    # security-check:
-    #   description: 'Run security checks'
-    #   required: false
-    #   default: 'false'
-    #   type: boolean
-
 jobs:
   deploy-dev:
-    name: deploy to Dev
-    if: ${{ github.actor != 'dependabot[bot]' && inputs.execute-deployment && inputs.environment-name == 'Development' }}
+    name: Deploy to Development
+    if: >
+      github.actor != 'dependabot[bot]' &&
+      inputs.execute-deployment == true &&
+      inputs.environment-name == 'Development'
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Deploy to Dev
-        run: echo "Deploying feature branch to Dev environment....feature/branch.."
+      - name: Deploy to Development
+        run: |
+          echo "Deploying branch: ${{ github.ref_name }} to Development environment..."
 
-  deploy-Staging:
-    name: deploy to Dev
-    if: ${{ github.actor != 'dependabot[bot]' && inputs.execute-deployment && inputs.environment-name == 'Staging' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
 
-      - name: Deploy to Dev
-        run: echo "Deploying feature branch to Staging environment....feature/branch.."
 
-  deploy-Production:
-    name: deploy to Dev
-    if: ${{ github.actor != 'dependabot[bot]' && inputs.execute-deployment && inputs.environment-name == 'Production' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+# name: Deploy Manually
 
-      - name: Deploy to Dev
-        run: echo "Deploying feature branch to Production environment....feature/branch.."
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       environment-deployment:
+#         description: 'Environment to deploy to'
+#         required: false
+#         default: false
+#         type: boolean
+
+#       environment-name:
+#         description: Environment Name
+#         required: false
+#         default: Development
+#         type: choice
+#         options:
+#           - Development
+#           - Staging
+#           - Production
+
+#     # security-check:
+#     #   description: 'Run security checks'
+#     #   required: false
+#     #   default: 'false'
+#     #   type: boolean
+
+# jobs:
+#   deploy-dev:
+#     name: deploy to Dev
+#     if: ${{ github.actor != 'dependabot[bot]' && inputs.execute-deployment && inputs.environment-name == 'Development' }}
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
+
+#       - name: Deploy to Dev
+#         run: echo "Deploying feature branch to Dev environment....feature/branch.."
+
+#   deploy-Staging:
+#     name: deploy to Dev
+#     if: ${{ github.actor != 'dependabot[bot]' && inputs.execute-deployment && inputs.environment-name == 'Staging' }}
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
+
+#       - name: Deploy to Dev
+#         run: echo "Deploying feature branch to Staging environment....feature/branch.."
+
+#   deploy-Production:
+#     name: deploy to Dev
+#     if: ${{ github.actor != 'dependabot[bot]' && inputs.execute-deployment && inputs.environment-name == 'Production' }}
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
+
+#       - name: Deploy to Dev
+#         run: echo "Deploying feature branch to Production environment....feature/branch.."
